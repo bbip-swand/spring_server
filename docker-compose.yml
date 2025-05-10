@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:8.0.33
+    platform: linux/amd64
+    container_name: bbip-mysql
+    restart: always
+    ports:
+      - 13306:3306 # 배포된 환경에서는 3306:3306
+    environment:
+      MYSQL_DATABASE: bbip_db
+      MYSQL_ROOT_PASSWORD: bbip
+      MYSQL_USER: bbip
+      MYSQL_PASSWORD: bbip
+    volumes:
+      - ./mysql/data:/var/lib/mysql # mysql의 데이터 raw상태. 현재 서버폴더를 루트로 기준으로 생성됨. 이거 git에 commit되면 안됨...
+      - ./mysql/config:/etc/mysql/conf.d #
+      - ./mysql/init/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - testnet
+
+  redis:
+    image: redis:latest
+    platform: linux/amd64
+    container_name: bbip-redis
+    restart: always
+    ports:
+      - 16379:6379
+    volumes:
+      - ./redis/data:/data
+      - ./redis/conf/redis.conf:/usr/local/conf/redis.conf
+    command: redis-server /usr/local/conf/redis.conf
+    networks:
+      - testnet
+
+networks:
+  testnet:
+    driver: bridge

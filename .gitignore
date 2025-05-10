@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+mysql/
+redis/
+src/main/resources/application-dev.yml
+src/main/resources/application-prod.yml
