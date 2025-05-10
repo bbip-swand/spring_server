@@ -36,8 +36,8 @@ services:
       - testnet
 
   backend:
-    container_name: gdg-server
-    image: singsangssong/gdg_team4
+    container_name: bbip-server
+    image: singsangssong/bbip_server
     expose:
       - 8080
     ports:
@@ -45,6 +45,7 @@ services:
     restart: always
     depends_on:
       - mysql
+      - redis
     networks:
       - testnet
     environment:
